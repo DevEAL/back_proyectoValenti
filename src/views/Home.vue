@@ -2,7 +2,7 @@
   <div class="home">
     <Header></Header>
     <v-content>
-      <h1>Hello</h1>
+      <Navigation></Navigation>
     </v-content>
   </div>
 </template>
