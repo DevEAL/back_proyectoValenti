@@ -2,7 +2,7 @@
   <div class="home">
     <Header></Header>
     <v-content>
-      <Navigation></Navigation>
+      <router-view />
     </v-content>
   </div>
 </template>
@@ -11,7 +11,7 @@
 // @ is an alias to /src
 import Header from "../components/Header.vue";
 export default {
-  name: "home",
+  name: "Home",
   components: {
     Header
   }

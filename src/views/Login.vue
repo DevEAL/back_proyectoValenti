@@ -1,64 +1,155 @@
 <template>
   <div id="app">
-    <v-app id="inspire">
-      <v-content>
-        <v-container class="fill-height" fluid>
-          <v-row align="center" justify="center">
-            <!-- <v-col cols="12" sm="8" md="12" align="center" justify="center">
-              <v-img
-                src="../assets/logo.png"
-                contain
-                class="lighten-2"
-                max-width="120"
-              ></v-img>
-            </v-col> -->
-            <v-col cols="12" sm="8" md="4">
-              <v-card class="elevation-12 pt-6" align="center" justify="center">
-                <v-img
-                  class="mb-6"
-                  src="../assets/logo.png"
-                  contain
-                  max-width="120"
-                ></v-img>
-                <v-toolbar-title>Login form</v-toolbar-title>
-                <v-card-text>
-                  <v-form>
-                    <v-text-field
-                      label="Login"
-                      name="login"
-                      prepend-icon="fa-user"
-                      type="text"
-                    />
-                    <v-text-field
-                      id="password"
-                      label="Password"
-                      name="password"
-                      prepend-icon="fa-lock"
-                      type="password"
-                    />
-                  </v-form>
-                </v-card-text>
-                <v-card-actions>
-                  <v-spacer />
-                  <v-btn color="primary">Login</v-btn>
-                </v-card-actions>
-              </v-card>
-            </v-col>
+    <v-container fluid>
+      <v-row align="center" justify="center" v-if="close">
+        <Alert :alert="notification"></Alert>
+      </v-row>
+      <v-row>
+        <v-col clos="12">
+          <v-row align="center" justify="center" class="pa-sm-12 xs-xl-auto">
+            <v-card
+              class="elevation-12 pt-6 pa-sm-12 xs-xl-auto"
+              align="center"
+              justify="center"
+              max-width="400"
+            >
+              <v-row align="center" justify="center">
+                <v-col cols="12" sm="12" md="12" xl="12">
+                  <v-img
+                    class="mb-6"
+                    src="../assets/logo.png"
+                    contain
+                    max-width="120"
+                  ></v-img>
+                </v-col>
+                <v-col cols="12" sm="12" md="12" xl="12">
+                  <p class="font-weight-black display-1">
+                    Login
+                  </p>
+                </v-col>
+                <v-col cols="12" sm="12" md="12" xl="12">
+                  <v-text-field
+                    label="Login"
+                    name="login"
+                    v-model="form.user"
+                    :rules="[rules.required]"
+                    prepend-icon="fa-user"
+                    type="text"
+                  />
+                </v-col>
+                <v-col cols="12" sm="12" md="12" xl="12">
+                  <v-text-field
+                    v-model="form.password"
+                    prepend-icon="fa-lock"
+                    :append-icon="show1 ? 'fa-eye' : 'fa-eye-slash'"
+                    :rules="[rules.required]"
+                    :type="show1 ? 'text' : 'password'"
+                    name="input-10-1"
+                    label="Contraseña"
+                    hint="At least 8 characters"
+                    @click:append="show1 = !show1"
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="12" sm="12" md="12" xl="12">
+                  <v-btn block color="primary" dark @click="login()">
+                    Login
+                  </v-btn>
+                </v-col>
+                <v-col
+                  cols="12"
+                  sm="12"
+                  md="12"
+                  xl="12"
+                  class="font-italic overline"
+                >
+                  &copy; {{ new Date().getFullYear() }} POWER BY EN ALGÚN LUGAR
+                </v-col>
+              </v-row>
+            </v-card>
           </v-row>
-        </v-container>
-      </v-content>
-    </v-app>
+        </v-col>
+      </v-row>
+    </v-container>
   </div>
 </template>
 
 <script>
+import Alert from "../components/Alert";
+import { mapState, mapMutations } from "vuex";
+
 export default {
-  name: "Login"
-  // data() {
-  //   return {
-  //     source: String
-  //   };
-  // }
+  name: "Login",
+  components: {
+    Alert
+  },
+  data() {
+    return {
+      show1: false,
+      form: {
+        user: "",
+        password: ""
+      },
+      rules: {
+        required: value => !!value || "Required."
+      },
+      notification: {}
+    };
+  },
+  methods: {
+    ...mapMutations(["open"]),
+    login() {
+      if (this.form.user == "" || this.form.password == "") {
+        this.open();
+        this.notification = {
+          color: "warning",
+          icon: "fa-exclamation-triangle",
+          text: "Hay Campos Vacios"
+        };
+      } else {
+        fetch(this.$Api.path + "/Login", {
+          method: "POST",
+          body: JSON.stringify(this.form),
+          headers: {
+            "Content-Type": "application/json"
+          }
+        })
+          .then(res => res.json())
+          .then(data => {
+            let status = data.statusCode;
+            switch (status) {
+              case 200:
+                // eslint-disable-next-line no-case-declarations
+                let response = data.data.data[0];
+
+                for (let item in response) {
+                  sessionStorage.setItem(item, response[item]);
+                }
+                this.form = {
+                  user: "",
+                  password: ""
+                };
+                this.$router.push("/Home");
+                break;
+              case 210:
+                this.open();
+                this.notification = {
+                  color: "warning",
+                  icon: "fa-exclamation-triangle",
+                  text: "Datos Erroneos"
+                };
+                this.form = {
+                  user: "",
+                  password: ""
+                };
+                break;
+            }
+          });
+      }
+    }
+  },
+  computed: {
+    ...mapState(["close"])
+  }
 };
 </script>
 
