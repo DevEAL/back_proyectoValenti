@@ -2,6 +2,10 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
 import Login from "../views/Login.vue";
+import Security from "../views/Security.vue";
+import Setting from "../views/Settings.vue";
+import Advance from "../views/Advance.vue";
+import New from "../views/New.vue";
 
 Vue.use(VueRouter);
 
@@ -15,6 +19,26 @@ const routes = [
     path: "/Home",
     name: "Home",
     component: Home
+  },
+  {
+    path: "/Advance",
+    name: "Advance",
+    component: Advance
+  },
+  {
+    path: "/New",
+    name: "New",
+    component: New
+  },
+  {
+    path: "/Security",
+    name: "Security",
+    component: Security
+  },
+  {
+    path: "/Settings",
+    name: "Settings",
+    component: Setting
   },
   {
     path: "/about",

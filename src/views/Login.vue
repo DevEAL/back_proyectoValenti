@@ -106,7 +106,7 @@ export default {
           text: "Hay Campos Vacios"
         };
       } else {
-        fetch(this.$Api.path + "/Login", {
+        fetch(this.$Api.path + "Login", {
           method: "POST",
           body: JSON.stringify(this.form),
           headers: {

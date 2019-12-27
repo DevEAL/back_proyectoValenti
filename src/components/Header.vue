@@ -1,18 +1,19 @@
+/* eslint-disable no-unused-vars */
 <template>
   <div>
-    <v-navigation-drawer v-model="drawer" absolute temporary>
+    <v-navigation-drawer v-model="drawer" app>
       <v-list dense nav>
         <v-list-item
-          v-for="item in itemsnav"
-          :key="item.title"
+          v-for="item in data"
+          :key="item.eal_name"
+          :to="item.eal_url"
           link
-          :to="items.to"
         >
           <v-list-item-icon>
-            <v-icon>{{ item.icon }}</v-icon>
+            <v-icon>{{ item.eal_icon }}</v-icon>
           </v-list-item-icon>
           <v-list-item-content>
-            <v-list-item-title>{{ item.title }}</v-list-item-title>
+            <v-list-item-title>{{ item.eal_name }}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </v-list>
@@ -25,20 +26,16 @@
       <v-menu offset-y>
         <template v-slot:activator="{ on }">
           <v-btn class="ma-2" tile outlined dark color="white" v-on="on">
-            <v-icon left dark>fa-user</v-icon> name
+            <v-icon left dark>fa-user</v-icon> {{ name }}
           </v-btn>
         </template>
         <v-list dense nav>
-          <v-list-item
-            v-for="item in items"
-            :key="item.title"
-            @click="option(item.title)"
-          >
+          <v-list-item @click="Logout()">
             <v-list-item-icon>
-              <v-icon>{{ item.icon }}</v-icon>
+              <v-icon>fa-sign-out-alt</v-icon>
             </v-list-item-icon>
             <v-list-item-title>
-              {{ item.title }}
+              Logout
             </v-list-item-title>
           </v-list-item>
         </v-list>
@@ -47,34 +44,61 @@
   </div>
 </template>
 <script>
+import { mapState, mapActions } from "vuex";
+
 export default {
   name: "Header",
   data() {
     return {
+      name: sessionStorage.eal_name,
       title: "Proyecto Valenti",
-      drawer: null,
-      items: [
-        { title: "Ver Perfil", icon: "fa-user", function: "VerPerfil" },
-        { title: "Logout", icon: "fa-sign-out-alt", function: "Logout" }
-      ],
+      drawer: false,
       itemsnav: [
-        { title: "Dashboard", icon: "fa-tachometer-alt", to: "/Home" },
-        { title: "Configuración", icon: "fa-cogs", to: "/Settings" },
-        { title: "Seguridad", icon: "fa-shield-alt", to: "/Security" }
+        {
+          title: "Dashboard",
+          icon: "fa-tachometer-alt",
+          to: "/Home"
+        },
+        {
+          title: "Configuración",
+          icon: "fa-cogs",
+          to: "/Settings"
+        },
+        {
+          title: "Seguridad",
+          icon: "fa-shield-alt",
+          to: "/Security"
+        }
       ]
     };
   },
+  mounted() {
+    this.GetData({ url: "Menus", opt: "PushData" });
+  },
+  computed: {
+    ...mapState(["data"])
+  },
   methods: {
-    option(action) {
-      if (action == "Logout") {
-        this.Logout();
-      } else {
-        // eslint-disable-next-line no-console
-        console.log("Ver Perfil");
-      }
-    },
+    ...mapActions(["GetData"]),
     Logout() {
-      this.$router.push("/");
+      fetch(this.$Api.path + "Logout", {
+        method: "POST",
+        body: JSON.stringify({ name: sessionStorage.eal_name }),
+        headers: {
+          authorization: sessionStorage.token,
+          "Content-Type": "application/json"
+        }
+      })
+        .then(res => res.json())
+        // eslint-disable-next-line no-unused-vars
+        .then(data => {
+          let status = data.statusCode;
+
+          if (status == "200") {
+            sessionStorage.clear();
+            this.$router.push("/");
+          }
+        });
     }
   }
 };
