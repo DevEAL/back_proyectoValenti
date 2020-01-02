@@ -23,12 +23,13 @@
               ></DateInput>
             </v-col>
             <v-col cols="12" xs="12" sm="12" md="4" lg="4" xl="4">
-              <v-file-input
+              <!-- <v-file-input
                 label="Subir Imagen ..."
                 outlined
                 prepend-icon="fa-camera"
                 v-model="form.img"
-              ></v-file-input>
+              ></v-file-input> -->
+              <InputFile @file="form.img = $event"></InputFile>
             </v-col>
             <v-col cols="12" xs="12" sm="12" md="12" lg="12" xl="12">
               <v-textarea
@@ -37,7 +38,6 @@
                 label="Descripcion"
                 v-model="form.Descripcion"
               ></v-textarea>
-              <input type="file" @change="previewFiles" multiple>
             </v-col>
           </v-row>
           <v-row align="center" justify="center">
@@ -54,6 +54,7 @@
 <script>
 import Header from "../components/Header.vue";
 import DateInput from "../components/DateInput.vue";
+import InputFile from "../components/InputFile.vue";
 import { mapState, mapActions } from "vuex";
 export default {
   name: "Advance",
@@ -64,7 +65,8 @@ export default {
   },
   components: {
     Header,
-    DateInput
+    DateInput,
+    InputFile
   },
   mounted() {
     this.GetData({ url: "Select/eal_categoria", opt: "PushSelect" });
