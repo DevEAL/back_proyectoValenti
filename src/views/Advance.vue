@@ -2,6 +2,14 @@
   <div class="Advance">
     <Header></Header>
     <v-content>
+      <v-container>
+        <Table :Title="title" :Data="Data" />
+      </v-container>
+    </v-content>
+    <v-content>
+      <v-row align="center" justify="center" v-if="close">
+        <Alert :alert="notification"></Alert>
+      </v-row>
       <v-form>
         <v-container>
           <v-row align="center" justify="center">
@@ -12,31 +20,31 @@
               <v-select
                 outlined
                 :items="Select"
-                v-model="form.Categoria"
+                item-text="name"
+                item-value="eal_idcategoria"
+                v-model="form.idcategoria"
                 label="Categoria"
               ></v-select>
             </v-col>
             <v-col cols="12" xs="12" sm="12" md="4" lg="4" xl="4">
               <DateInput
                 title="Fecha Inicio de Obra"
-                @fecha="form.date = $event"
+                :form="form"
+                @fecha="form.dataInicio = $event"
               ></DateInput>
             </v-col>
             <v-col cols="12" xs="12" sm="12" md="4" lg="4" xl="4">
-              <!-- <v-file-input
-                label="Subir Imagen ..."
-                outlined
-                prepend-icon="fa-camera"
-                v-model="form.img"
-              ></v-file-input> -->
-              <InputFile @file="form.img = $event"></InputFile>
+              <InputFile
+                @name="form.img = $event"
+                @file="form.url = $event"
+              ></InputFile>
             </v-col>
             <v-col cols="12" xs="12" sm="12" md="12" lg="12" xl="12">
               <v-textarea
                 outlined
                 name="input-7-4"
                 label="Descripcion"
-                v-model="form.Descripcion"
+                v-model="form.message"
               ></v-textarea>
             </v-col>
           </v-row>
@@ -47,7 +55,6 @@
           </v-row>
         </v-container>
       </v-form>
-      {{ form }}
     </v-content>
   </div>
 </template>
@@ -55,35 +62,47 @@
 import Header from "../components/Header.vue";
 import DateInput from "../components/DateInput.vue";
 import InputFile from "../components/InputFile.vue";
+import Table from "../components/Table.vue";
 import { mapState, mapActions } from "vuex";
 export default {
   name: "Advance",
   data() {
     return {
-      form: {}
+      form: {},
+      title: [
+        {
+          text: "Id",
+          align: "left",
+          sortable: false,
+          value: "name"
+        },
+        { text: "Imagen", value: "calories" },
+        { text: "Fecha de Inicio Obras", value: "fat" },
+        { text: "Mensaje", value: "carbs" },
+        { text: "Categoria", value: "protein" },
+        { text: "Activo", value: "action", sortable: false }
+      ],
+      Data: []
     };
   },
   components: {
     Header,
     DateInput,
-    InputFile
+    InputFile,
+    Table
   },
   mounted() {
     this.GetData({ url: "Select/eal_categoria", opt: "PushSelect" });
   },
   methods: {
-    ...mapActions(["GetData"]),
-    previewFiles(event) {
-      // eslint-disable-next-line no-console
-      console.log(event.target.files[0]["tmp_name"]);
-    },
+    ...mapActions(["GetData", "PostData"]),
     cargar() {
-      // eslint-disable-next-line no-console
-      console.log(this.form);
+      this.PostData({ url: "Advance", form: this.form });
+      this.form = {};
     }
   },
   computed: {
-    ...mapState(["Select"])
+    ...mapState(["Select", "close", "notification"])
   }
 };
 </script>

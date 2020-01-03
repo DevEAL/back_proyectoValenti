@@ -42,10 +42,10 @@ export default {
         file.addEventListener("load", () => {
           this.form.url = file.result;
           this.form.File = files[0];
-          // eslint-disable-next-line no-console
-          console.log(this.form);
+
           this.status = true;
-          this.$emit("file", this.form);
+          this.$emit("name", this.form.name);
+          this.$emit("file", this.form.url);
         });
       } else {
         this.form = {};

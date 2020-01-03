@@ -91,20 +91,20 @@ export default {
       },
       rules: {
         required: value => !!value || "Required."
-      },
-      notification: {}
+      }
     };
   },
   methods: {
-    ...mapMutations(["open"]),
+    ...mapMutations(["open", "setNotification"]),
     login() {
       if (this.form.user == "" || this.form.password == "") {
         this.open();
-        this.notification = {
+        let response = {
           color: "warning",
           icon: "fa-exclamation-triangle",
           text: "Hay Campos Vacios"
         };
+        this.setNotification(response);
       } else {
         fetch(this.$Api.path + "Login", {
           method: "POST",
@@ -132,11 +132,13 @@ export default {
                 break;
               case 210:
                 this.open();
-                this.notification = {
+                // eslint-disable-next-line no-case-declarations
+                let responseUn = {
                   color: "warning",
                   icon: "fa-exclamation-triangle",
                   text: "Datos Erroneos"
                 };
+                this.setNotification(responseUn);
                 this.form = {
                   user: "",
                   password: ""
@@ -148,7 +150,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(["close"])
+    ...mapState(["close", "notification"])
   }
 };
 </script>
