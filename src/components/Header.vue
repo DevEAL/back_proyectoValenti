@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 <template>
   <div>
     <v-navigation-drawer v-model="drawer" app>
@@ -41,6 +40,9 @@
         </v-list>
       </v-menu>
     </v-app-bar>
+    <v-content>
+      <router-view name="helper" />
+    </v-content>
   </div>
 </template>
 <script>
@@ -52,24 +54,7 @@ export default {
     return {
       name: sessionStorage.eal_name,
       title: "Proyecto Valenti",
-      drawer: false,
-      itemsnav: [
-        {
-          title: "Dashboard",
-          icon: "fa-tachometer-alt",
-          to: "/Home"
-        },
-        {
-          title: "Configuración",
-          icon: "fa-cogs",
-          to: "/Settings"
-        },
-        {
-          title: "Seguridad",
-          icon: "fa-shield-alt",
-          to: "/Security"
-        }
-      ]
+      drawer: false
     };
   },
   mounted() {

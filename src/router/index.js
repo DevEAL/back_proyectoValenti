@@ -6,6 +6,8 @@ import Security from "../views/Security.vue";
 import Setting from "../views/Settings.vue";
 import Advance from "../views/Advance.vue";
 import New from "../views/New.vue";
+import Header from "../components/Header.vue";
+// import Prueba from "../components/Pruebas.vue";
 
 Vue.use(VueRouter);
 
@@ -18,7 +20,8 @@ const routes = [
   {
     path: "/Home",
     name: "Home",
-    component: Home
+    component: Header,
+    children: [{ path: "Users", component: Advance }]
   },
   {
     path: "/Advance",
@@ -33,7 +36,8 @@ const routes = [
   {
     path: "/Security",
     name: "Security",
-    component: Security
+    component: Security,
+    children: [{ path: "Users", component: Home }]
   },
   {
     path: "/Settings",
