@@ -41,7 +41,7 @@
       </v-menu>
     </v-app-bar>
     <v-content>
-      <router-view name="helper" />
+      <router-view name="helper"></router-view>
     </v-content>
   </div>
 </template>

@@ -1,13 +1,13 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Home from "../views/Home.vue";
+// import Home from "../views/Home.vue";
 import Login from "../views/Login.vue";
 import Security from "../views/Security.vue";
 import Setting from "../views/Settings.vue";
 import Advance from "../views/Advance.vue";
 import New from "../views/New.vue";
 import Header from "../components/Header.vue";
-// import Prueba from "../components/Pruebas.vue";
+import Prueba from "../components/Pruebas.vue";
 
 Vue.use(VueRouter);
 
@@ -37,7 +37,7 @@ const routes = [
     path: "/Security",
     name: "Security",
     component: Security,
-    children: [{ path: "Users", component: Home }]
+    children: [{ path: "Users", component: Prueba }]
   },
   {
     path: "/Settings",

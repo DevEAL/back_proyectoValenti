@@ -2,8 +2,8 @@
   <div>
     <v-text-field
       v-model="form.name"
-      label="Seleccionar Imagen"
-      prepend-icon="fa-camera"
+      :label="title"
+      :prepend-icon="icon"
       @click="open"
       outlined
       :disabled="status"
@@ -12,7 +12,7 @@
       type="file"
       style="display: none"
       ref="image"
-      accept="image/*"
+      :accept="accept"
       @change="onFile"
     />
   </div>
@@ -20,6 +20,20 @@
 <script>
 export default {
   name: "InputFile",
+  props: {
+    accept: {
+      type: String,
+      default: ".doc,.docx,.pdf"
+    },
+    icon: {
+      type: String,
+      default: "fa-file-pdf"
+    },
+    title: {
+      type: String,
+      default: "Seleccionar Archivo"
+    }
+  },
   data() {
     return {
       form: {},
