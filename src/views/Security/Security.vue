@@ -2,11 +2,12 @@
   <div class="Security">
     <Header></Header>
     <Toolbar title="Seguridad" :items="menu"></Toolbar>
+    <router-view />
   </div>
 </template>
 <script>
-import Header from "../components/Header.vue";
-import Toolbar from "../components/Toolbar.vue";
+import Header from "../../components/Header.vue";
+import Toolbar from "../../components/Toolbar.vue";
 export default {
   name: "Security",
   components: {
