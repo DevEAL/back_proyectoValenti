@@ -88,7 +88,7 @@ export default {
         { text: "Imagen", value: "eal_img" },
         { text: "Fecha de Inicio Obras", value: "eal_dataInicio" },
         { text: "Mensaje", value: "eal_message" },
-        { text: "Categoria", value: "eal_idcategoria" },
+        { text: "Categoria", value: "eal_name" },
         { text: "Activo", value: "eal_active", sortable: false },
         { text: "", value: "action", sortable: false }
       ]
