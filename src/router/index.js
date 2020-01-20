@@ -1,12 +1,12 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-// import Home from "../views/Home.vue";
+import Home from "../views/Home.vue";
 import Login from "../views/Login.vue";
 import Security from "../views/Security/Security.vue";
 import Setting from "../views/Settings/Settings.vue";
 import Advance from "../views/Advance.vue";
 import New from "../views/New.vue";
-import Header from "../components/Header.vue";
+// import Header from "../components/Header.vue";
 import Prueba from "../components/Pruebas.vue";
 import User from "../views/Security/User.vue";
 import Perfil from "../views/Security/Perfil.vue";
@@ -26,7 +26,7 @@ const routes = [
   {
     path: "/Home",
     name: "Home",
-    component: Header,
+    component: Home,
     meta: { title: "Home" }
   },
   {
@@ -85,7 +85,8 @@ const routes = [
   {
     path: "/about",
     name: "about",
-    component: Prueba
+    component: Prueba,
+    meta: { title: "Prueba" }
   }
 ];
 

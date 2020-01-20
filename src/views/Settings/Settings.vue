@@ -1,17 +1,15 @@
 <template>
   <div class="Setting">
-    <Header></Header>
+    <Head></Head>
     <Toolbar title="Configuración" :items="menu"></Toolbar>
     <router-view />
   </div>
 </template>
 <script>
-import Header from "../../components/Header.vue";
 import Toolbar from "../../components/Toolbar.vue";
 export default {
   name: "Setting",
   components: {
-    Header,
     Toolbar
   },
   data() {

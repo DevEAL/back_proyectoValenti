@@ -22,12 +22,7 @@ export default {
       default: "Toolbar"
     },
     items: {
-      type: Object,
-      // eslint-disable-next-line vue/require-valid-default-prop
-      default: [
-        { title: "item 1", to: "/Home" },
-        { title: "item 2", to: "/Home" }
-      ]
+      type: [Object, Array]
     }
   }
 };

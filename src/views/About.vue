@@ -7,7 +7,7 @@
   </div>
 </template>
 <script>
-import Header from "../components/Header.vue";
+import Header from "../components/Header/Header.vue";
 import DateInput from "../components/DateInput.vue";
 export default {
   name: "About",

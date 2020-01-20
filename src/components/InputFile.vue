@@ -3,7 +3,7 @@
     <v-text-field
       v-model="form.name"
       :label="title"
-      :prepend-icon="icon"
+      :prepend-inner-icon="icon"
       @click="open"
       outlined
       :disabled="status"

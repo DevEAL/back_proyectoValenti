@@ -11,7 +11,7 @@
         <v-text-field
           v-model="date"
           :label="title"
-          prepend-icon="fa-calendar-alt"
+          prepend-inner-icon="fa-calendar-alt"
           outlined
           v-on="on"
         ></v-text-field>

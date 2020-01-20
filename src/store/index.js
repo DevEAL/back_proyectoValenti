@@ -7,20 +7,40 @@ import Advance from "./modules/Advance";
 import New from "./modules/New";
 import Security from "./modules/Security";
 import Settings from "./modules/Settings";
+import router from "../router";
+
+const api = path["path"];
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    close: false,
+    alert: false,
+    dataAlert: {
+      type: "success",
+      text: "Texto de la alerta"
+    },
     data: [],
+    Loading: false,
     Select: {},
-    notification: {},
-    form: {}
+    form: {},
+    close: false,
+    notificationState: false,
+    notification: {}
   },
   mutations: {
-    open(state) {
-      state.close = !state.close;
+    setAlert(state, response) {
+      state.alert = true;
+      state.dataAlert = {
+        type: response.type,
+        text: response.text
+      };
+    },
+    setAlertClose(state) {
+      state.alert = false;
+    },
+    setClearData(state) {
+      state.data = [];
     },
     PushData(state, response) {
       state.data = response.data.data;
@@ -28,38 +48,110 @@ export default new Vuex.Store({
     PushSelect(state, response) {
       state.Select = response.data.data;
     },
-    setNotification(state, response) {
-      state.notification = response;
-    },
     setForm(state) {
       state.form = {};
+    },
+    setLoading(state) {
+      state.Loading = !state.Loading;
+    },
+    open(state) {
+      state.close = !state.close;
+    },
+    setNotification(state, response) {
+      state.notificationState = !state.notificationState;
+      state.notification = {
+        type: response.type,
+        text: response.text
+      };
+    },
+    setNotificationClose(state) {
+      state.notificationState = !state.notificationState;
     }
   },
   actions: {
-    GetData: async function({ commit }, url) {
-      const response = await fetch(path["path"] + url["url"], {
+    GetData: async function({ commit }, data) {
+      const response = await fetch(api + data["url"], {
         headers: {
           authorization: sessionStorage.token
         }
       });
-      const data = await response.json();
+      const dataResponse = await response.json();
 
-      commit(url["opt"], data);
+      commit(data["opt"], dataResponse);
     },
-    PostData: async function({ commit }, url) {
-      fetch(path["path"] + url["url"], {
+    Login: async function({ commit }, form) {
+      commit("setLoading");
+      const response = await fetch(api + "Login", {
         method: "POST",
-        body: JSON.stringify(url["form"]),
+        body: JSON.stringify(form),
+        headers: {
+          "Content-Type": "application/json"
+        }
+      });
+      const dataResponse = await response.json();
+      let status = dataResponse.statusCode;
+      switch (status) {
+        case 200:
+          // eslint-disable-next-line no-case-declarations
+          let data = dataResponse.data.data[0];
+
+          for (let item in data) {
+            sessionStorage.setItem(item, data[item]);
+          }
+          commit("setLoading");
+          router.push("/Home");
+          break;
+        case 210:
+          // eslint-disable-next-line no-case-declarations
+          let item = {
+            type: "warning",
+            text: "Datos Erroneos"
+          };
+          commit("setLoading");
+          commit("setAlert", item);
+          break;
+      }
+    },
+    Logout: async function({ commit }, name) {
+      commit("setLoading");
+      const response = await fetch(api + "Logout", {
+        method: "POST",
+        body: JSON.stringify(name),
         headers: {
           authorization: sessionStorage.token,
           "Content-Type": "application/json"
         }
-      })
-        .then(res => res.json())
-        .then(data => {
-          // eslint-disable-next-line no-console
-          console.log(data);
-        });
+      });
+
+      const dataResponse = await response.json();
+
+      if (dataResponse.statusCode == 200) {
+        sessionStorage.clear();
+        commit("setLoading");
+        commit("setClearData");
+        router.push("/");
+      }
+    },
+    PostData: async function({ commit }, data) {
+      commit("setLoading");
+      const response = await fetch(api + data.url, {
+        method: "POST",
+        body: JSON.stringify(data.form),
+        headers: {
+          authorization: sessionStorage.token,
+          "Content-Type": "application/json"
+        }
+      });
+      const dataResponse = await response.json();
+      if (dataResponse.statusCode == 201) {
+        let notify = {
+          type: "success",
+          text: "Registro Exitoso"
+        };
+        commit("setNotification", notify);
+        commit("open");
+        commit("setLoading");
+      }
     }
   },
   modules: {

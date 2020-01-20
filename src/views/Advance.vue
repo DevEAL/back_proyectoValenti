@@ -1,6 +1,6 @@
 <template>
   <div class="Advance">
-    <Header></Header>
+    <Head></Head>
     <v-content>
       <v-container>
         <Table :Header="title" :Data="data" Title="Avances de Obras" />
@@ -54,7 +54,7 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn class="ma-2" tile color="error" dark @click="open()">
+            <v-btn class="ma-2" tile color="error" dark @click="cerrar()">
               Cancelar
             </v-btn>
             <v-btn class="ma-2" tile color="success" dark @click="cargar()">
@@ -68,7 +68,6 @@
   </div>
 </template>
 <script>
-import Header from "../components/Header.vue";
 import DateInput from "../components/DateInput.vue";
 import InputFile from "../components/InputFile.vue";
 import Table from "../components/Table.vue";
@@ -95,7 +94,6 @@ export default {
     };
   },
   components: {
-    Header,
     DateInput,
     InputFile,
     Table
@@ -108,6 +106,10 @@ export default {
     ...mapActions(["GetData", "PostData"]),
     ...mapActions("Advance", ["GetDataAdvance"]),
     ...mapMutations(["open"]),
+    cerrar() {
+      this.form = {};
+      this.open();
+    },
     cargar() {
       this.PostData({ url: "Advance", form: this.form });
       this.form = {};

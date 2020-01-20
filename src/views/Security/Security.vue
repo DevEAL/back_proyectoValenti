@@ -1,17 +1,15 @@
 <template>
   <div class="Security">
-    <Header></Header>
+    <Head></Head>
     <Toolbar title="Seguridad" :items="menu"></Toolbar>
     <router-view />
   </div>
 </template>
 <script>
-import Header from "../../components/Header.vue";
 import Toolbar from "../../components/Toolbar.vue";
 export default {
   name: "Security",
   components: {
-    Header,
     Toolbar
   },
   data() {

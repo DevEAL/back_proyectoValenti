@@ -1,6 +1,6 @@
 <template>
   <div class="New">
-    <Header></Header>
+    <Head></Head>
     <v-content>
       <v-container>
         <Table :Header="title" :Data="data" Title="Boletines" />
@@ -63,7 +63,6 @@
   </div>
 </template>
 <script>
-import Header from "../components/Header.vue";
 import Table from "../components/Table.vue";
 import InputFile from "../components/InputFile.vue";
 import { mapState, mapActions, mapMutations } from "vuex";
@@ -71,7 +70,6 @@ import { mapState, mapActions, mapMutations } from "vuex";
 export default {
   name: "New",
   components: {
-    Header,
     Table,
     InputFile
   },

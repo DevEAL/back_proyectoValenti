@@ -1,43 +1,41 @@
 <template>
-  <div>
+  <v-container fluid>
     <v-alert
-      :type="alert.color"
-      :value="close"
+      :type="dataAlert.type"
+      :value="alert"
+      max-width="300"
       prominent
+      tile
       transition="scale-transition"
     >
       <v-row align="center">
         <v-col class="grow">
-          {{ alert.text }}
+          {{ dataAlert.text }}
         </v-col>
         <v-col class="shrink">
-          <v-icon @click="open">fa-times</v-icon>
+          <v-btn
+            class="ml-auto"
+            @click="setAlertClose()"
+            text
+            icon
+            color="white"
+          >
+            <v-icon>fa-times</v-icon>
+          </v-btn>
         </v-col>
       </v-row>
     </v-alert>
-  </div>
+  </v-container>
 </template>
 <script>
 import { mapState, mapMutations } from "vuex";
-
 export default {
   name: "Alert",
-  props: {
-    alert: {
-      type: Object,
-      // eslint-disable-next-line vue/require-valid-default-prop
-      default: {
-        color: "success",
-        icon: "fa-exclamation-triangle",
-        text: "Hello"
-      }
-    }
-  },
   methods: {
-    ...mapMutations(["open"])
+    ...mapMutations(["setAlert", "setAlertClose"])
   },
   computed: {
-    ...mapState(["close"])
+    ...mapState(["alert", "dataAlert"])
   }
 };
 </script>

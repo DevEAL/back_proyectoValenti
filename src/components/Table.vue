@@ -37,20 +37,10 @@ export default {
       default: "Name Table"
     },
     Header: {
-      type: Array,
-      // eslint-disable-next-line vue/require-valid-default-prop
-      default: {
-        name: "success",
-        value: "fa-exclamation-triangle"
-      }
+      type: [Object, Array]
     },
     Data: {
-      type: Array,
-      // eslint-disable-next-line vue/require-valid-default-prop
-      default: {
-        name: "success",
-        value: "fa-exclamation-triangle"
-      }
+      type: [Object, Array]
     }
   },
   methods: {
